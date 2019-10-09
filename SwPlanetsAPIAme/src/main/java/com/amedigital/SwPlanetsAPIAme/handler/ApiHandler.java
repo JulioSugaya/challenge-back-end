@@ -78,9 +78,11 @@ public class ApiHandler {
     public Mono<ServerResponse> delete(final ServerRequest request) {
         String planetId = request.pathVariable(id);
 
-        return ServerResponse.ok().build(awsDynamoService.delete(planetId))
-        		.switchIfEmpty(ServerResponse.notFound().build())
+        Mono<Planet> planetResponseMono = awsDynamoService.findById(planetId);
+        
+        return planetResponseMono
+                .flatMap(planet -> ServerResponse.ok().build(awsDynamoService.delete(planetId)))
+                .switchIfEmpty(ServerResponse.notFound().build())
                 .onErrorResume(errorHandler::throwableError);
-
     }
 }
