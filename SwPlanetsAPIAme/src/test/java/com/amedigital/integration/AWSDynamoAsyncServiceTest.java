@@ -1,5 +1,7 @@
 package com.amedigital.integration;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Collections;
 
 import javax.annotation.Resource;
@@ -31,33 +33,19 @@ import com.amedigital.SwPlanetsAPIAme.service.AWSDynamoService;
 import com.amedigital.SwPlanetsAPIAme.service.StarWarsAPIService;
 
 import reactor.core.publisher.Mono;
+import software.amazon.awssdk.services.dynamodb.DynamoDBAsyncClient;
 
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {ApiRouter.class, ApiHandler.class})
+//@ContextConfiguration(classes = {ApiRouter.class, ApiHandler.class})
 @WebFluxTest
-//@Import(ApiHandler.class)
-public class SwPlanetsAPIAmeIntegrationTest {
-
-    @Autowired
-    private ApplicationContext context;
-    
-//	@Autowired
-	private WebTestClient webTestClient;
+public class AWSDynamoAsyncServiceTest {
 
 	@Autowired
 	private AWSDynamoService awsDynamoService;
 //
 	@MockBean
-	private ErrorHandler errorHandler;
+	private DynamoDBAsyncClient dynamoDBAsyncClient;
 //    
-//	@Autowired
-//    private StarWarsAPIService starWarsAPIService;
-    
-    @Before
-    public void setUp() {
-        webTestClient = WebTestClient.bindToApplicationContext(context).build();
-    }
-    
 	private Planet createPlanet() {
 		return new Planet(null, "Test Planet", "Test Climate", "Test Terrain", 2);
 	}
@@ -66,12 +54,9 @@ public class SwPlanetsAPIAmeIntegrationTest {
 	public void testCreatePlanet() {
 		Planet planet = createPlanet();
 
-		webTestClient.post().uri("/planets")
-				.contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .body(Mono.just(planet), Planet.class)
-				.exchange()
-				.expectStatus().isOk();
+		Mono<Planet> createdPlanet = awsDynamoService.save(planet);
+		
+//		createdPlanet.assertEquals(expected, createdPlanet.map());
 	}
 
 	@Test

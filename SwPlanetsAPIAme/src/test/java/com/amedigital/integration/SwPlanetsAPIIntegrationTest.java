@@ -182,6 +182,21 @@ public class SwPlanetsAPIIntegrationTest {
     }
     
     @Test
+    public void testSwPlanetsAPIFindAllSwapiFunction() {
+    	Planet planet = createPlanet();
+    	awsDynamoService.save(planet);
+    	
+        WebTestClient.bindToApplicationContext(context)
+            .build()
+            .get()
+            .uri(uri + "/swapi/all")
+            .exchange()
+            .expectStatus()
+            .isOk().expectBody().consumeWith(response ->
+			Assertions.assertThat(response.getResponseBody()).isNotNull());
+    }
+    
+    @Test
     public void testWebTestClientWithServerURL() {
         WebTestClient.bindToServer()
             .baseUrl("http://localhost:" + port)
