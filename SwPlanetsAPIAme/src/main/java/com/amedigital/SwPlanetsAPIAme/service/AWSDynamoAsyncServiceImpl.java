@@ -7,6 +7,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.amedigital.SwPlanetsAPIAme.entity.Planet;
 
@@ -26,8 +27,10 @@ import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest;
 
 
 public class AWSDynamoAsyncServiceImpl implements AWSDynamoService {
-
-    private static final String tableName = "Planet";
+	
+	@Value("${amazon.dynamodb.tablename}")
+    private String tableName;
+	
     private DynamoDBAsyncClient client;
     
     @Autowired
