@@ -1,7 +1,5 @@
 package com.amedigital.integration;
 
-import java.util.List;
-
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +24,9 @@ import reactor.core.publisher.Mono;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = SwPlanetsApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SwPlanetsAPIIntegrationTest {
-
+    
+	private static final String uri = "/planets";
+	
     @Autowired
     private ApplicationContext context;
     
@@ -35,15 +35,12 @@ public class SwPlanetsAPIIntegrationTest {
 
 	@Autowired
 	private AWSDynamoService awsDynamoService;
-    
-	private static final String uri = "/planets";
 	
     private final RouterFunction<?> ROUTER_FUNCTION = RouterFunctions.route(
     		RequestPredicates.GET(uri), request -> ServerResponse.ok().build()
-    		);
+    );
     
     private final WebHandler WEB_HANDLER = exchange -> Mono.empty();
-
     
 	private Planet createPlanet() {
 		return new Planet(null, "Kamino", "Test Climate", "Test Terrain", 2);
@@ -208,5 +205,4 @@ public class SwPlanetsAPIIntegrationTest {
             .isOk()
             .expectBody();
     }
-
 }
