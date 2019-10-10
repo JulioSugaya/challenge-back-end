@@ -13,11 +13,11 @@ public class Planet {
     private int amountFilms;
     
     @JsonCreator
-    public Planet(@JsonProperty("id") final String id,
-    			 @JsonProperty("name") final String name,
-                 @JsonProperty("climate") final String climate,
-                 @JsonProperty("terrain") final String terrain,
-                 @JsonProperty("amountFilms") final int amountFilms) {
+    public Planet(@JsonProperty("id") String id,
+    			 @JsonProperty("name") String name,
+                 @JsonProperty("climate") String climate,
+                 @JsonProperty("terrain") String terrain,
+                 @JsonProperty("amountFilms") int amountFilms) {
     	this.id = id != null ? id : UUID.randomUUID().toString();
         this.name = name;
         this.climate = climate;

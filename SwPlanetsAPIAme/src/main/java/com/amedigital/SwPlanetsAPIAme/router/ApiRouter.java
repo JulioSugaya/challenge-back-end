@@ -39,7 +39,7 @@ public class ApiRouter {
                 );
     }
     
-    public static RequestPredicate hasQueryParam(String name) {
+    private static RequestPredicate hasQueryParam(String name) {
     	  return RequestPredicates.queryParam(name, p -> StringUtils.hasText(p));
     }
 }

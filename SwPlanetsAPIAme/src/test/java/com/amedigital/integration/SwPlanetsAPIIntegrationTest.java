@@ -25,7 +25,7 @@ import reactor.core.publisher.Mono;
 @SpringBootTest(classes = SwPlanetsApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SwPlanetsAPIIntegrationTest {
     
-	private static final String uri = "/planets";
+	private static final String URI = "/planets";
 	
     @Autowired
     private ApplicationContext context;
@@ -37,7 +37,7 @@ public class SwPlanetsAPIIntegrationTest {
 	private AWSDynamoService awsDynamoService;
 	
     private final RouterFunction<?> ROUTER_FUNCTION = RouterFunctions.route(
-    		RequestPredicates.GET(uri), request -> ServerResponse.ok().build()
+    		RequestPredicates.GET(URI), request -> ServerResponse.ok().build()
     );
     
     private final WebHandler WEB_HANDLER = exchange -> Mono.empty();
@@ -57,7 +57,7 @@ public class SwPlanetsAPIIntegrationTest {
         WebTestClient.bindToRouterFunction(ROUTER_FUNCTION)
             .build()
             .get()
-            .uri(uri)
+            .uri(URI)
             .exchange()
             .expectStatus()
             .isOk()
@@ -73,7 +73,7 @@ public class SwPlanetsAPIIntegrationTest {
         WebTestClient.bindToApplicationContext(context)
             .build()
             .post()
-            .uri(uri)
+            .uri(URI)
             .body(Mono.just(planet), Planet.class)
             .exchange()
             .expectStatus()
@@ -94,7 +94,7 @@ public class SwPlanetsAPIIntegrationTest {
         WebTestClient.bindToApplicationContext(context)
             .build()
             .get()
-            .uri(uri)
+            .uri(URI)
             .exchange()
             .expectStatus()
             .isOk().expectBody().consumeWith(response ->
@@ -109,7 +109,7 @@ public class SwPlanetsAPIIntegrationTest {
         WebTestClient.bindToApplicationContext(context)
             .build()
             .get()
-            .uri(uri + "/" + planet.getId())
+            .uri(URI + "/" + planet.getId())
             .exchange()
             .expectStatus()
             .isOk()
@@ -129,7 +129,7 @@ public class SwPlanetsAPIIntegrationTest {
         WebTestClient.bindToApplicationContext(context)
             .build()
             .get()
-            .uri(uri + "?search=" + planet.getName())
+            .uri(URI + "?search=" + planet.getName())
             .exchange()
             .expectStatus()
             .isOk()
@@ -144,7 +144,7 @@ public class SwPlanetsAPIIntegrationTest {
         WebTestClient.bindToApplicationContext(context)
             .build()
             .get()
-            .uri(uri + "0")
+            .uri(URI + "0")
             .exchange()
             .expectStatus()
             .isNotFound();
@@ -158,7 +158,7 @@ public class SwPlanetsAPIIntegrationTest {
         WebTestClient.bindToApplicationContext(context)
             .build()
             .delete()
-            .uri(uri + "/" + planet.getId())
+            .uri(URI + "/" + planet.getId())
             .exchange()
             .expectStatus()
             .isOk()
@@ -172,7 +172,7 @@ public class SwPlanetsAPIIntegrationTest {
         WebTestClient.bindToApplicationContext(context)
             .build()
             .delete()
-            .uri(uri + "/0")
+            .uri(URI + "/0")
             .exchange()
             .expectStatus()
             .isNotFound();
@@ -186,7 +186,7 @@ public class SwPlanetsAPIIntegrationTest {
         WebTestClient.bindToApplicationContext(context)
             .build()
             .get()
-            .uri(uri + "/swapi/all")
+            .uri(URI + "/swapi/all")
             .exchange()
             .expectStatus()
             .isOk().expectBody().consumeWith(response ->
@@ -199,7 +199,7 @@ public class SwPlanetsAPIIntegrationTest {
             .baseUrl("http://localhost:" + port)
             .build()
             .get()
-            .uri(uri)
+            .uri(URI)
             .exchange()
             .expectStatus()
             .isOk()
